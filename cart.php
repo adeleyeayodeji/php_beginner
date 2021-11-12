@@ -10,17 +10,25 @@ require './pages/header-home.php';
 include "inc/process.php";
 ?>
     <div class="py-3">
-        <h2>Cart Page (<?php echo count($_SESSION["cart"]); ?>)</h2>
+        <div class="row">
+            <div class="col-6">
+                <h2>Cart Page (<?php echo isset($_SESSION["cart"]) ? count($_SESSION["cart"]) : 0; ?>)</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a href="checkout.php" class="btn btn-primary ">Checkout</a>
+            </div>
+        </div>
         <hr>
         <div class="row">
             <?php 
-            foreach ($_SESSION["cart"] as $pid => $quantity) {
-                $quantity = $quantity["quantity"];
-                //GET Data
-                $SQL = "SELECT * FROM products WHERE id = '$pid'";
-                $query = mysqli_query($connection, $SQL);
-                $result = mysqli_fetch_assoc($query);
-                ?>
+            if(isset($_SESSION["cart"])){
+                foreach ($_SESSION["cart"] as $pid => $quantity) {
+                    $quantity = $quantity["quantity"];
+                    //GET Data
+                    $SQL = "SELECT * FROM products WHERE id = '$pid'";
+                    $query = mysqli_query($connection, $SQL);
+                    $result = mysqli_fetch_assoc($query);
+                    ?>
             <div class="col-3">
                 <div class="card">
                     <img src="<?php echo $result["image"] ?>" style="    height: 200px;width: 100%;"
@@ -46,6 +54,12 @@ include "inc/process.php";
                 </div>
             </div>
 
+            <?php
+                }
+
+            }else{
+                ?>
+            <h2 class="text-center">Cart is not active</h2>
             <?php
             }
         ?>

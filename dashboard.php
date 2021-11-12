@@ -5,7 +5,7 @@ if(!isset($_SESSION["user"])){
 }
 
 if($_SESSION["user"]["role"] == "user"){
-    header("location: index.php");
+    header("location: user.php");
 }
 //Script links
 require "inc/header.php"; 
@@ -54,6 +54,9 @@ include "inc/process.php";
                     </li>
                     <li>
                         <a href="new-product.php">New Product</a>
+                    </li>
+                    <li>
+                        <a href="orders.php">Orders</a>
                     </li>
                 </ul>
             </div>

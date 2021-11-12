@@ -7,7 +7,12 @@
         </a>
         <div class="d-flex">
             <a href="store.php" class="nav-link text-white">Store</a>
-            <a href="cart.php" class="nav-link text-white">Cart (<?php echo count($_SESSION["cart"]) ?? 0 ?>)</a>
+            <a href="cart.php" class="nav-link text-white">Cart (<?php  if(isset($_SESSION["cart"])){
+                    echo count($_SESSION["cart"]);
+                }else{
+                    echo 0;
+                }
+                ?>)</a>
             <?php
             if(isset($_SESSION["user"])){
                 ?>

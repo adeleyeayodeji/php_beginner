@@ -39,7 +39,7 @@
                         $post_id = $_SESSION["url"];
                         header("location: post.php?post_id=$post_id");
                     }else{
-                        header("location: index.php");
+                        header("location: user.php");
                     }
                 }else{
                     header("location: dashboard.php");
@@ -419,5 +419,135 @@
         //Remove from cart
         unset($_SESSION["cart"][$pid]);
         $success = "Product removed";
+    }
+
+    if(isset($_POST["tx_id"])){
+        $tx_id = $_POST["tx_id"];
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/$tx_id/verify",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json",
+            "Authorization: Bearer FLWSECK_TEST-af1af523da3f141f894a26be4b071230-X"
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $jsondata = json_decode($response);
+        header("Content-Type: application/json");
+        //Check if the payment is valid
+        if($jsondata->status == "success"){
+            //Loop through our session cart
+            foreach ($_SESSION["cart"] as $pid => $value) {
+                //Pass the product data
+                $order_id = $jsondata->data->tx_ref;
+                $amount = $jsondata->data->amount;
+                $user_id = $_SESSION["user"]["id"];
+                $product_id = $pid;
+                $quantity = $value["quantity"];
+                $status = "Processing";
+                $payment_status = "paid";
+                $payment_method = "flutterwave";
+                //Insert into orders table
+                $sql = "INSERT INTO 
+                orders(order_id, amount, user_id, product_id, quantity, status, payment_status, payment_method) 
+                
+                VALUES('$order_id', '$amount', '$user_id', '$product_id', '$quantity', '$status', '$payment_status', '$payment_method')";
+                //Query
+                $query = mysqli_query($connection, $sql);
+            }
+            //Empty cart
+            unset($_SESSION["cart"]);
+            //Return message
+            $response2 = ["code" => 200];
+            echo json_encode($response2);
+        }else{
+            $response2 = ["code" => 401];
+            echo json_encode($response2);
+        }
+    }
+
+    if(isset($_POST["paystack"])){
+          $reference = $_POST["paystack"];
+            
+          $curl = curl_init();
+  
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.paystack.co/transaction/verify/$reference",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+            "Authorization: Bearer sk_test_45aef9454a22888ab7f1c5926750b9fedd94f828",
+            "Cache-Control: no-cache",
+            ),
+        ));
+        
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        
+        $jsondata = json_decode($response);
+        header("Content-Type: application/json");
+        //Check if the payment is valid
+        if($jsondata->status == "true"){
+            //Loop through our session cart
+            foreach ($_SESSION["cart"] as $pid => $value) {
+                //Pass the product data
+                $order_id = $jsondata->data->reference;
+                $amount = $jsondata->data->amount;
+                $user_id = $_SESSION["user"]["id"];
+                $product_id = $pid;
+                $quantity = $value["quantity"];
+                $status = "Processing";
+                $payment_status = "paid";
+                $payment_method = "paystack";
+                //Insert into orders table
+                $sql = "INSERT INTO 
+                orders(order_id, amount, user_id, product_id, quantity, status, payment_status, payment_method) 
+                
+                VALUES('$order_id', '$amount', '$user_id', '$product_id', '$quantity', '$status', '$payment_status', '$payment_method')";
+                //Query
+                $query = mysqli_query($connection, $sql);
+            }
+            //Empty cart
+            unset($_SESSION["cart"]);
+            //Return message
+            $response2 = ["code" => 200];
+            echo json_encode($response2);
+        }else{
+            $response2 = ["code" => 401];
+            echo json_encode($response2);
+        }
+    }
+
+    if(isset($_POST["order_status"])){
+        $status = $_POST["order_status"];
+        $order_id = $_GET["order_id"];
+        //SQL
+        $sql = "UPDATE orders SET status = '$status' WHERE order_id = '$order_id'";
+        $query = mysqli_query($connection, $sql);
+        if($query){
+            $success = "Order updated successfully <br> <a href='vieworder.php?order_id=$order_id'>Reload Page</a>";
+        }else{
+            $error = "Unable to update order <br>".mysqli_error($connection);
+        }
     }
 ?>
