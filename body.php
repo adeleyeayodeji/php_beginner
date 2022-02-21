@@ -1,6 +1,7 @@
 <div class="container">
     <?php require './pages/header-home.php'; ?>
     <div class="container-fluid my-3">
+        <h2>Blog Post</h2>
         <div class="row">
             <div class="col-8">
                 <div class="row">

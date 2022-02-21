@@ -8,7 +8,7 @@ require "inc/header.php";
     <div class="container-fluid my-3">
         <div class="row">
             <div class="col-8">
-                <h2>Store</h2>
+                <h2>Ecommerce Store</h2>
                 <div class="row">
                     <?php
                         $sql = "SELECT * FROM products ORDER BY id DESC";
