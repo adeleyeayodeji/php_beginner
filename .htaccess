@@ -5,3 +5,6 @@ RewriteRule ^/$ index.php [NC,L]
 RewriteRule ^article/([0-9]+)/([0-9a-zA-Z_-]+)/$ post.php?post_id=$1&title=$2 [NC,L]
 
 RewriteRule ^store_product/([0-9]+)/([0-9a-zA-Z_-]+)/$ product.php?product_id=$1&title=$2 [NC,L]
+
+RewriteRule ^api/([0-9a-zA-Z_-]+)/$ api/action.php?action=$1 [NC,L]
+RewriteRule ^api/([0-9a-zA-Z_-]+)$ api/action.php?action=$1 [NC,L]

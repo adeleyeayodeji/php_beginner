@@ -6,25 +6,25 @@
             <div class="col-8">
                 <div class="row">
                     <?php
-                        $sql = "SELECT * FROM posts ORDER BY id DESC";
-                        $query = mysqli_query($connection, $sql);
-                        while($result = mysqli_fetch_assoc($query)){ 
-                            ?>
-                    <div class="col-4 mt-2">
-                        <div class="card">
-                            <img src="<?php echo $result["thumbnail"] ?>" style="    height: 200px;width: 100%;"
-                                class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $result["title"] ?></h5>
-                                <p class="card-text">Date: <?php echo date("F j, Y", strtotime($result["timestamp"])) ?>
-                                </p>
-                                <a href="article/<?php echo $result["id"] ?>/<?php echo str_replace(" ","-",$result["title"]) ?>/"
-                                    class="btn btn-primary">Read</a>
+                    $sql = "SELECT * FROM posts ORDER BY id DESC";
+                    $query = mysqli_query($connection, $sql);
+                    while ($result = mysqli_fetch_assoc($query)) {
+                    ?>
+                        <div class="col-4 mt-2">
+                            <div class="card">
+                                <img src="<?php echo $result["thumbnail"] ?>" style="    height: 200px;width: 100%;" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $result["title"] ?></h5>
+                                    <p class="card-text">Date: <?php echo date("F j, Y", strtotime($result["timestamp"])) ?>
+                                    </p>
+                                    <a href="article/<?php echo $result["id"] ?>/<?php
+                                                                                    echo str_replace(" ", "-", str_replace("%", "", strtolower($result["title"])))
+                                                                                    ?>/" class="btn btn-primary">Read</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <?php
-                        }
+                    }
                     ?>
                 </div>
             </div>
@@ -44,16 +44,15 @@
                     <h4>Categories</h4>
                     <ul>
                         <?php
-                            $sql_c = "SELECT * FROM category ORDER By id DESC";
-                            $query_c = mysqli_query($connection, $sql_c);
-                            while ($result_c = mysqli_fetch_assoc($query_c)) { 
-                                ?>
-                        <li>
-                            <a
-                                href="post-category.php?post_category_id=<?php echo $result_c["id"]; ?>"><?php echo $result_c["name"]; ?></a>
-                        </li>
+                        $sql_c = "SELECT * FROM category ORDER By id DESC";
+                        $query_c = mysqli_query($connection, $sql_c);
+                        while ($result_c = mysqli_fetch_assoc($query_c)) {
+                        ?>
+                            <li>
+                                <a href="post-category.php?post_category_id=<?php echo $result_c["id"]; ?>"><?php echo $result_c["name"]; ?></a>
+                            </li>
                         <?php
-                            }
+                        }
                         ?>
                     </ul>
                 </div>
