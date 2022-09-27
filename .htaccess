@@ -6,5 +6,12 @@ RewriteRule ^article/([0-9]+)/([0-9a-zA-Z_-]+)/$ post.php?post_id=$1&title=$2 [N
 
 RewriteRule ^store_product/([0-9]+)/([0-9a-zA-Z_-]+)/$ product.php?product_id=$1&title=$2 [NC,L]
 
+##Get all blog posts API
+
 RewriteRule ^api/([0-9a-zA-Z_-]+)/$ api/action.php?action=$1 [NC,L]
 RewriteRule ^api/([0-9a-zA-Z_-]+)$ api/action.php?action=$1 [NC,L]
+
+##single blog API
+
+RewriteRule ^api/([0-9a-zA-Z_-]+)/([0-9]+)/$ api/action.php?action=$1&post_id=$2 [NC,L]
+RewriteRule ^api/([0-9a-zA-Z_-]+)/([0-9]+)$ api/action.php?action=$1&post_id=$2 [NC,L]
