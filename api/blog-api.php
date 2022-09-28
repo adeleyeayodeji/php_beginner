@@ -1,7 +1,4 @@
 <?php
-//header
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
 
 //check if action is get_posts
 if (isset($_GET['action']) && $_GET['action'] == 'get_posts') {
@@ -19,6 +16,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_posts') {
             "image" => BASE_URL . $result['thumbnail'],
             "author" => "Admin",
             "comments" => getComments($result['id']),
+            "link" => LINK . "article/" . $result["id"] . "/" . str_replace(" ", "-", str_replace("%", "", strtolower($result["title"])))
         ];
     }
     //return json response

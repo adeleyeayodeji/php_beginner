@@ -1,4 +1,12 @@
 <?php
+//header
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+//accept post and get
+header('Access-Control-Allow-Methods: POST, GET');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
+
+//initialize api
 require '../inc/connection.php';
 //check if the host is 10.0.2.2
 if ($_SERVER['HTTP_HOST'] == '10.0.2.2:8888') {
@@ -6,6 +14,8 @@ if ($_SERVER['HTTP_HOST'] == '10.0.2.2:8888') {
 } else {
     define('BASE_URL', 'http://localhost:8888/php_beginner/');
 }
+//link constant
+define('LINK', 'http://localhost:8888/php_beginner/');
 //get category name
 function getCategoryName($category_id)
 {
@@ -45,3 +55,6 @@ function getUserData($user_id)
 }
 
 require_once 'blog-api.php';
+require_once 'user-api.php';
+require_once 'comment-api.php';
+require_once 'search-api.php';
