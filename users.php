@@ -1,21 +1,21 @@
 <?php
 session_start();
-if(!isset($_SESSION["user"])){
+if (!isset($_SESSION["user"])) {
     header("location: login.php");
 }
 
-if($_SESSION["user"]["role"] == "user"){
+if ($_SESSION["user"]["role"] == "user") {
     header("location: index.php");
 }
 //Script links
-require "inc/header.php"; 
+require "inc/header.php";
 ?>
 <div class="container">
     <?php
-//For header content
-require './pages/header-home.php';
-include "inc/process.php";
-?>
+    //For header content
+    require './pages/header-home.php';
+    include "inc/process.php";
+    ?>
     <div class="container p-3">
         <div class="row">
             <div class="col-12">
@@ -55,17 +55,17 @@ include "inc/process.php";
                 <div class="container">
                     <h6>All Users</h6>
                     <?php
-                    if(isset($error)){
-                        ?>
-                    <div class="alert alert-danger">
-                        <strong><?php echo $error; ?></strong>
-                    </div>
+                    if (isset($error)) {
+                    ?>
+                        <div class="alert alert-danger">
+                            <strong><?php echo $error; ?></strong>
+                        </div>
                     <?php
-                    }elseif(isset($success)){
-                        ?>
-                    <div class="alert alert-success">
-                        <strong><?php echo $success; ?></strong>
-                    </div>
+                    } elseif (isset($success)) {
+                    ?>
+                        <div class="alert alert-success">
+                            <strong><?php echo $success; ?></strong>
+                        </div>
                     <?php
                     }
                     ?>
@@ -82,33 +82,33 @@ include "inc/process.php";
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT * FROM users ORDER BY id DESC";
+                            $sql = "SELECT * FROM ORDER BY id DESC";
                             $query = mysqli_query($connection, $sql);
                             $count = 1;
                             while ($result = mysqli_fetch_assoc($query)) {
-                                ?>
-                            <tr>
-                                <td scope="row"><?php echo $count ?></td>
-                                <td scope="row">
-                                    <?php echo $result["name"] ?>
-                                </td>
-                                <td>
-                                    <?php echo $result["email"] ?>
-                                </td>
-                                <td>
-                                    <?php echo $result["role"] ?>
-                                </td>
-                                <td>
-                                    <?php echo $result["timestamp"] ?>
-                                </td>
-                                <td>
-                                    <a href="edit-user.php?edit_user_id=<?php echo $result["id"] ?>">Edit</a>
-                                    |
-                                    <a href="?delete_user=<?php echo $result["id"] ?>">Delete</a>
-                                </td>
-                            </tr>
+                            ?>
+                                <tr>
+                                    <td scope="row"><?php echo $count ?></td>
+                                    <td scope="row">
+                                        <?php echo $result["name"] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $result["email"] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $result["role"] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $result["timestamp"] ?>
+                                    </td>
+                                    <td>
+                                        <a href="edit-user.php?edit_user_id=<?php echo $result["id"] ?>">Edit</a>
+                                        |
+                                        <a href="?delete_user=<?php echo $result["id"] ?>">Delete</a>
+                                    </td>
+                                </tr>
                             <?php
-                            $count++;
+                                $count++;
                             }
                             ?>
                         </tbody>
@@ -119,10 +119,10 @@ include "inc/process.php";
     </div>
 
     <?php
-//Footer content
-require './pages/footer-home.php';
-//Footer script links
-?>
+    //Footer content
+    require './pages/footer-home.php';
+    //Footer script links
+    ?>
 </div>
 <?php
 require "inc/footer.php";

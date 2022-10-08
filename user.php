@@ -36,7 +36,7 @@ require "inc/header.php";
                 <tbody>
                     <?php
                     $user_id = $_SESSION["user"]["id"];
-                    $sql = "SELECT * FROM orders WHERE user_id = '$user_id' ORDER By id DESC";
+                    $sql = "SELECT * FROM orders WHERE user_id = '$user_id' GROUP BY order_id ORDER By id DESC";
                     $query = mysqli_query($connection, $sql);
                     while ($result = mysqli_fetch_assoc($query)) {
                     ?>

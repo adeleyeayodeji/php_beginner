@@ -54,7 +54,24 @@ function getUserData($user_id)
     return $result["name"];
 }
 
+function getProductById($product_id)
+{
+    global $connection;
+    $sql = "SELECT * FROM products WHERE id = '$product_id' AND status = 1";
+    $query = mysqli_query($connection, $sql);
+    $result = mysqli_fetch_assoc($query);
+    $product_res = [
+        "product_id" => $result['id'],
+        "title" => $result['title'],
+        "price" => $result['price'],
+        "image" => BASE_URL . $result['image'],
+    ];
+    return $product_res;
+}
+
 require_once 'blog-api.php';
 require_once 'user-api.php';
 require_once 'comment-api.php';
 require_once 'search-api.php';
+require_once 'product-api.php';
+require_once 'order-api.php';
