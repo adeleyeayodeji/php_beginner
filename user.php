@@ -36,32 +36,46 @@ require "inc/header.php";
                 <tbody>
                     <?php
                     $user_id = $_SESSION["user"]["id"];
-                    $sql = "SELECT * FROM orders WHERE user_id = '$user_id' GROUP BY order_id ORDER By id DESC";
+                    $sql = "SELECT o.*
+                        FROM orders AS o
+                        WHERE o.user_id = '$user_id' AND NOT EXISTS (
+                            SELECT 1
+                            FROM orders AS o2
+                            WHERE o.order_id = o2.order_id AND o.id < o2.id
+                        )
+                        ORDER BY o.id DESC";
+                    // explanation: select all orders from the user where there is no other order with the same order_id and a higher id
+                    // this way you get the latest order for each order_id
+                    // then order by id descending so you get the latest order first
                     $query = mysqli_query($connection, $sql);
-                    while ($result = mysqli_fetch_assoc($query)) {
+                    if ($query) {
+                        while ($result = mysqli_fetch_assoc($query)) {
                     ?>
-                        <tr>
-                            <td><?php echo $result["order_id"] ?></td>
-                            <td>#<?php echo number_format($result["amount"]) ?></td>
-                            <td>
-                                <?php echo $result["payment_method"] ?>
-                            </td>
-                            <td>
-                                <?php
-                                $pid = $result["product_id"];
-                                //Fetch product from base
-                                $sql2 = "SELECT * FROM products WHERE id = $pid";
-                                $query2 = mysqli_query($connection, $sql2);
-                                $result2 = mysqli_fetch_assoc($query2);
-                                ?>
-                                <img src="<?php echo $result2["image"]; ?>" style="height: 25px;width: 25px;object-fit: cover;object-position: center;" alt="">
-                                <?php echo $result2["title"]; ?>
-                            </td>
-                            <td><?php echo $result["quantity"] ?></td>
-                            <td><?php echo $result["status"] ?></td>
-                            <td><?php echo $result["timestamp"] ?></td>
-                        </tr>
+                            <tr>
+                                <td><?php echo $result["order_id"] ?></td>
+                                <td>#<?php echo number_format($result["amount"]) ?></td>
+                                <td>
+                                    <?php echo $result["payment_method"] ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $pid = $result["product_id"];
+                                    //Fetch product from base
+                                    $sql2 = "SELECT * FROM products WHERE id = $pid";
+                                    $query2 = mysqli_query($connection, $sql2);
+                                    $result2 = mysqli_fetch_assoc($query2);
+                                    ?>
+                                    <img src="<?php echo $result2["image"]; ?>" style="height: 25px;width: 25px;object-fit: cover;object-position: center;" alt="">
+                                    <?php echo $result2["title"]; ?>
+                                </td>
+                                <td><?php echo $result["quantity"] ?></td>
+                                <td><?php echo $result["status"] ?></td>
+                                <td><?php echo $result["timestamp"] ?></td>
+                            </tr>
                     <?php
+                        }
+                    } else {
+                        echo "<tr><td colspan='7'>Error in SQL query: " . mysqli_error($connection) . "</td></tr>";
                     }
                     ?>
 
