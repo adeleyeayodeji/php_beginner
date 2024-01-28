@@ -437,7 +437,7 @@ if (isset($_POST["tx_id"])) {
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",
-            "Authorization: Bearer FLWSECK_TEST-af1af523da3f141f894a26be4b071230-X"
+            "Authorization: Bearer FLWSECK_TEST-b4577c3290e9210b63dfcb76a4f9628e-X"
         ),
     ));
 

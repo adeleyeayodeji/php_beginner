@@ -82,7 +82,7 @@ require "inc/header.php";
                         </thead>
                         <tbody>
                             <?php
-                            $sql = "SELECT * FROM ORDER BY id DESC";
+                            $sql = "SELECT * FROM users ORDER BY id DESC";
                             $query = mysqli_query($connection, $sql);
                             $count = 1;
                             while ($result = mysqli_fetch_assoc($query)) {
